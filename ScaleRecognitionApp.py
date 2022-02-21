@@ -37,6 +37,10 @@ def choose_keyboard_midi():
     change_settings(si=MIDIKeyboardInput())
 
 
+def choose_keyboard_name():
+    change_settings(si=NameKeyboardInput())
+
+
 def prime_last():
     change_settings(cps=LastStrategy())
 
@@ -65,8 +69,10 @@ def main():
     estimate_item = FunctionItem("Estimate", estimate)
 
     choose_keyboard_midi_item = FunctionItem("Keyboard MIDI", choose_keyboard_midi)
+    choose_keyboard_name_item = FunctionItem("Keyboard Name", choose_keyboard_name)
     input_strategy_menu = ConsoleMenu("Input Strategy")
     input_strategy_menu.append_item(choose_keyboard_midi_item)
+    input_strategy_menu.append_item(choose_keyboard_name_item)
     submenu_input_strategy = SubmenuItem("Input Strategy", input_strategy_menu, menu)
 
     choose_prime_strategy_menu = ConsoleMenu("Choosing Prime Strategy")

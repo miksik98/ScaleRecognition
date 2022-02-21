@@ -1,5 +1,6 @@
 from typing import List
 from scale_input.ChoosePrimeStrategy import ChoosePrimeStrategy, ExplicitStrategy
+from music21.note import Note
 
 
 class ScaleInput:
@@ -37,3 +38,26 @@ class MIDIKeyboardInput(ScaleInput):
 
     def __str__(self):
         return "MIDI Keyboard"
+
+
+class NameKeyboardInput(ScaleInput):
+    def listen_for_scale(self, choose_prime_strategy: ChoosePrimeStrategy) -> List[int]:
+        print("Type names, then press ENTER.")
+        midis = []
+        while True:
+            name = input()
+            if name == '':
+                break
+            midi = Note(name).pitch.midi
+            midis.append(midi)
+        if len(midis) > 0:
+            prime = choose_prime_strategy.apply(midis)
+            midis = [(m + 120 - prime) % 12 for m in midis]
+            midis = list(sorted(set(midis)))
+        return midis
+
+    def listen_for_prime(self) -> int:
+        return Note(input()).pitch.midi
+
+    def __str__(self):
+        return "Name Keyboard"
