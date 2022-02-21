@@ -4,14 +4,15 @@ from consolemenu.items import *
 from estimator import Estimator
 import tabulate
 from scale_input import *
+from typing import Optional
 
-input_strategy: ScaleInput = None
-choose_prime_strategy: ChoosePrimeStrategy = None
+_settings = get_settings()
+
+input_strategy: ScaleInput = _settings.scale_input
+choose_prime_strategy: ChoosePrimeStrategy = _settings.choose_prime_strategy
 
 
 def estimate():
-    assert input_strategy is not None
-    assert choose_prime_strategy is not None
     pitches = input_strategy.listen(choose_prime_strategy)
     estimator = Estimator()
     most_accurate_scales = estimator.most_accurate_scales(pitches)
@@ -21,28 +22,35 @@ def estimate():
     print(tabulate.tabulate(scales))
 
 
+def change_settings(si: Optional[ScaleInput] = None, cps: Optional[ChoosePrimeStrategy] = None):
+    global input_strategy, choose_prime_strategy
+    if si is not None:
+        input_strategy = si
+        print(f"Set input strategy: {input_strategy}")
+    if cps is not None:
+        choose_prime_strategy = cps
+        print(f"Set choose prime strategy: {choose_prime_strategy}")
+    ScaleRecognitionSettings(input_strategy, choose_prime_strategy).persist()
+
+
 def choose_keyboard_midi():
-    global input_strategy
-    input_strategy = MIDIKeyboardInput()
-    print(f"Set input strategy: {input_strategy}")
+    change_settings(si=MIDIKeyboardInput())
 
 
 def prime_last():
-    global choose_prime_strategy
-    choose_prime_strategy = LastStrategy()
-    print(f"Set choose prime strategy: {choose_prime_strategy}")
+    change_settings(cps=LastStrategy())
 
 
 def prime_first():
-    global choose_prime_strategy
-    choose_prime_strategy = FirstStrategy()
-    print(f"Set choose prime strategy: {choose_prime_strategy}")
+    change_settings(cps=FirstStrategy())
 
 
 def prime_lowest():
-    global choose_prime_strategy
-    choose_prime_strategy = LowestStrategy()
-    print(f"Set choose prime strategy: {choose_prime_strategy}")
+    change_settings(cps=LowestStrategy())
+
+
+def prime_explicit():
+    change_settings(cps=ExplicitStrategy())
 
 
 def subtitle():
@@ -65,9 +73,11 @@ def main():
     first_item = FunctionItem("First", prime_first)
     last_item = FunctionItem("Last", prime_last)
     lowest_item = FunctionItem("Lowest", prime_lowest)
+    explicit_item = FunctionItem("Explicit", prime_explicit)
     choose_prime_strategy_menu.append_item(first_item)
     choose_prime_strategy_menu.append_item(last_item)
     choose_prime_strategy_menu.append_item(lowest_item)
+    choose_prime_strategy_menu.append_item(explicit_item)
     submenu_choose_prime = SubmenuItem("Choosing Prime Strategy", choose_prime_strategy_menu, menu)
 
     menu.append_item(estimate_item)

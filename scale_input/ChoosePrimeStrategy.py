@@ -25,3 +25,17 @@ class LastStrategy(ChoosePrimeStrategy):
 
     def __str__(self):
         return "Last"
+
+
+class ExplicitStrategy(ChoosePrimeStrategy):
+    def __init__(self):
+        self.prime = None
+
+    def apply(self, pitches) -> int:
+        return self.prime
+
+    def set_prime(self, prime: int):
+        self.prime = prime
+
+    def __str__(self):
+        return "Explicit"
