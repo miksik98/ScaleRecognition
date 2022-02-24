@@ -26,10 +26,13 @@ def get_choose_prime_strategy_from_str(s):
 def get_scale_input_from_str(s):
     midi = MIDIKeyboardInput()
     name = NameKeyboardInput()
+    device = MIDIDeviceInput()
     if s == str(midi):
         return midi
     elif s == str(name):
         return name
+    elif s == str(device):
+        return device
     else:
         raise Exception(f"Unknown  scale input strategy: {s}")
 
