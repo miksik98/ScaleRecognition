@@ -2,6 +2,7 @@ import csv
 from model import Scale
 import functools
 
+
 class ScaleCsvException(Exception):
     pass
 
@@ -43,7 +44,7 @@ class ScaleCsvReader:
         for i in range(len(names)):
             current_name = names[i]
             if current_name not in duplications_names:
-                for j in range(i+1, len(names)):
+                for j in range(i + 1, len(names)):
                     if names[j] == current_name:
                         duplications_names.append(current_name)
                         break
@@ -54,7 +55,7 @@ class ScaleCsvReader:
         for i in range(len(scales)):
             current_pitches = scales[i].steps
             if current_pitches not in duplications_pitches:
-                for j in range(i+1, len(scales)):
+                for j in range(i + 1, len(scales)):
                     if scales[j].steps == current_pitches:
                         duplications_pitches.append(scales[i].name)
                         break

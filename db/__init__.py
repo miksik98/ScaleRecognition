@@ -1,3 +1,3 @@
-from .ScaleCsvReader import ScaleCsvReader
+from .ScaleCsvReader import *
 
-__all__ = ["ScaleCsvReader"]
+__all__ = ["ScaleCsvReader", "ScaleCsvException"]
