@@ -92,7 +92,6 @@ class MIDIDeviceInput(ScaleInput):
             prime = choose_prime_strategy.apply(midis)
             midis = [(m + 120 - prime) % 12 for m in midis]
             midis = list(sorted(set(midis)))
-        print(midis)
         return midis
 
     def listen_for_prime(self) -> int:
